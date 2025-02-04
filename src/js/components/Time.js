@@ -23,7 +23,7 @@ export default class Time extends Component {
     const options = {
       hour: "numeric",
       minute: "numeric",
-      timeZone: "Europe/London",
+      timeZone: "Asia/Kolkata",
     };
 
     const time = new Intl.DateTimeFormat([], options).format(new Date());

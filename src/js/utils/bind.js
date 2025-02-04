@@ -20,11 +20,11 @@ export default function autoBind(self, { include, exclude } = {}) {
       typeof pattern === "string" ? key === pattern : pattern.test(key);
 
     if (include) {
-      return include.some(match);
+      return include.some(match); // eslint-disable-line unicorn/no-array-callback-reference
     }
 
     if (exclude) {
-      return !exclude.some(match);
+      return !exclude.some(match); // eslint-disable-line unicorn/no-array-callback-reference
     }
 
     return true;

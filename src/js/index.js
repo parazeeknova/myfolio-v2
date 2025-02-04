@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { copyText } from "./utils/index";
 import { mapEach } from "./utils/dom";
+// import Home from "./pages/home";
 import Time from "./components/Time";
 
 const toContactButtons = document.querySelectorAll(".contact-scroll");
@@ -10,6 +11,7 @@ const footer = document.getElementById("js-footer");
 const scrollEl = document.querySelector("[data-scroll-container]");
 const emailButton = document.querySelector("button.email");
 const toCopyText = document.querySelector(".to-copy span");
+// const body = document.body;
 const time = new Time();
 
 gsap.registerPlugin(ScrollTrigger);
@@ -30,8 +32,8 @@ setTimeout(() => {
 scroll.on("scroll", ScrollTrigger.update);
 
 ScrollTrigger.scrollerProxy(scroll.el, {
-  scrollTop(...args) {
-    return args.length
+  scrollTop(value) {
+    return arguments.length
       ? scroll.scrollTo(value, 0, 0)
       : scroll.scroll.instance.scroll.y;
   },
@@ -121,7 +123,6 @@ export default class Home {
 
   homeAnimations() {
     gsap.to(".home__projects__line", { autoAlpha: 1 });
-    // biome-ignore lint/complexity/noForEach: ignore
     gsap.utils.toArray(".home__projects__line").forEach((el) => {
       const line = el.querySelector("span");
       gsap.from(line, {
@@ -134,7 +135,6 @@ export default class Home {
       });
     });
 
-    // biome-ignore lint/complexity/noForEach: ignore
     gsap.utils.toArray("[data-fade-in]").forEach((el) => {
       gsap.from(el, {
         scrollTrigger: {
@@ -149,7 +149,6 @@ export default class Home {
     });
 
     if (window.innerWidth <= 768) {
-      // biome-ignore lint/complexity/noForEach: ignore
       gsap.utils.toArray(".home__projects__project").forEach((el) => {
         const text = el.querySelector(".title__main");
         const link = el.querySelector(".project__link");
