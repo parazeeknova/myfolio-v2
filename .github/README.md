@@ -1,6 +1,6 @@
 <div align="center">
 
-  <a href="https://github.com/parazeeknova/myfolio-v2">
+  <a href="https://folio.zephyyrr.in">
     <img src="assets/Harsh.png" alt="Logo" width="20%">
   </a>
   <br>
