@@ -9,9 +9,7 @@
 
 <div align="center">
 
-  <a href="https://folio.zephyyrr.in">
-    <h2>MyFolio - v2</h2>
-  </a>
+  <a href="https://folio.zephyyrr.in"><h1>MyFolio - v2</h1></a>
 
   **The second iteration of my portfolio website**  
   A simple, minimalistic, and self-hosted showcase of my projects and skills.
