@@ -1,0 +1,22 @@
+{
+	"name": "myfolio-v2",
+	"version": "1.0.0",
+	"description": "Second iteration for my personal portfolio website",
+	"repository": "https://github.com/parazeeknova/myfolio-v2.git",
+	"author": "Harsh Sahu",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"dev": "vite src --port 3000",
+		"build": "vite build src",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"gsap": "^3.12.7",
+		"locomotive-scroll": "^4.1.4"
+	},
+	"devDependencies": {
+		"sass": "^1.83.4",
+		"vite": "^6.0.11"
+	}
+}
