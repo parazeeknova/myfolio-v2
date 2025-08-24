@@ -33,5 +33,5 @@ yarn install
 yarn dev
 ```
 
-Check out my first iteration of the portfolio [here](https://dev.zephyyrr.in).
+Check out my first iteration of the portfolio [here](https://myfoliov1.zephyyrr.in).
 
