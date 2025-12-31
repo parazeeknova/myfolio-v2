@@ -16,14 +16,16 @@ export default class FloatingLogos extends Component {
       elements: {
         logo1: ".floating-logo-1",
         logo2: ".floating-logo-2",
+        logo3: ".floating-logo-3",
       },
     });
 
     this.scenes = [];
     this.renderers = [];
-    this.originalParents = [null, null];
-    this.initialPositions = [null, null];
+    this.originalParents = [null, null, null];
+    this.initialPositions = [null, null, null];
     this.lastPositions = [
+      { x: 0, y: 0 },
       { x: 0, y: 0 },
       { x: 0, y: 0 },
     ];
@@ -33,57 +35,62 @@ export default class FloatingLogos extends Component {
   }
 
   moveLogosToBody() {
-    [this.elements.logo1, this.elements.logo2].forEach((logoElement, index) => {
-      if (!logoElement) return;
+    [this.elements.logo1, this.elements.logo2, this.elements.logo3].forEach(
+      (logoElement, index) => {
+        if (!logoElement) return;
 
-      this.originalParents[index] = logoElement.parentElement;
-      const rect = logoElement.getBoundingClientRect();
-      this.initialPositions[index] = {
-        x: rect.left,
-        y: rect.top,
-        width: rect.width,
-        height: rect.height,
-      };
+        this.originalParents[index] = logoElement.parentElement;
+        const rect = logoElement.getBoundingClientRect();
+        this.initialPositions[index] = {
+          x: rect.left,
+          y: rect.top,
+          width: rect.width,
+          height: rect.height,
+        };
 
-      const img = logoElement.querySelector("img");
-      if (img) {
-        img.style.display = "none";
+        const img = logoElement.querySelector("img");
+        if (img) {
+          img.style.display = "none";
+        }
+
+        document.body.appendChild(logoElement);
+
+        logoElement.style.position = "fixed";
+        logoElement.style.left = `${rect.left}px`;
+        logoElement.style.top = `${rect.top}px`;
+        logoElement.style.zIndex = "9999";
+        logoElement.style.pointerEvents = "none";
+        logoElement.style.willChange = "transform";
+        logoElement.style.transform = "translate3d(0, 0, 0)";
       }
-
-      document.body.appendChild(logoElement);
-
-      logoElement.style.position = "fixed";
-      logoElement.style.left = `${rect.left}px`;
-      logoElement.style.top = `${rect.top}px`;
-      logoElement.style.zIndex = "9999";
-      logoElement.style.pointerEvents = "none";
-      logoElement.style.willChange = "transform";
-      logoElement.style.transform = "translate3d(0, 0, 0)";
-    });
+    );
   }
 
   initWebGL() {
-    [this.elements.logo1, this.elements.logo2].forEach((logoElement, index) => {
-      createLogoScene(logoElement, index, (sceneData) => {
-        this.scenes.push(sceneData);
-        startAnimationLoop(
-          sceneData.scene,
-          sceneData.camera,
-          sceneData.renderer,
-          sceneData.material,
-          () => this.isDestroyed
-        );
-      });
-    });
+    [this.elements.logo1, this.elements.logo2, this.elements.logo3].forEach(
+      (logoElement, index) => {
+        createLogoScene(logoElement, index, (sceneData) => {
+          this.scenes.push(sceneData);
+          startAnimationLoop(
+            sceneData.scene,
+            sceneData.camera,
+            sceneData.renderer,
+            sceneData.material,
+            () => this.isDestroyed
+          );
+        });
+      }
+    );
   }
 
   initAnimation() {
-    if (!this.elements.logo1 || !this.elements.logo2) return;
+    if (!this.elements.logo1 || !this.elements.logo2 || !this.elements.logo3)
+      return;
 
     const heroSection = document.querySelector(".home__hero");
     const scroller = document.querySelector("[data-scroll-container]");
     const checkWebGL = setInterval(() => {
-      if (this.scenes.length === 2) {
+      if (this.scenes.length === 3) {
         clearInterval(checkWebGL);
         this.setupScrollAnimations(heroSection, scroller);
       }
@@ -144,11 +151,20 @@ export default class FloatingLogos extends Component {
         yPercent: -0.2 - Math.random() * 0.4,
         rotation: (Math.random() - 0.5) * 0.3,
       },
+      {
+        xPercent: 0.4 + Math.random() * 0.2,
+        yPercent: -0.25 - Math.random() * 0.35,
+        rotation: (Math.random() - 0.5) * 0.3,
+      },
     ];
 
     this.scenes.forEach(({ material, mesh }, index) => {
-      const logoElement =
-        index === 0 ? this.elements.logo1 : this.elements.logo2;
+      const logoElements = [
+        this.elements.logo1,
+        this.elements.logo2,
+        this.elements.logo3,
+      ];
+      const logoElement = logoElements[index];
       const initialPos = this.initialPositions[index];
 
       if (!initialPos) return;
@@ -170,35 +186,35 @@ export default class FloatingLogos extends Component {
           let targetY = 0;
 
           if (progress < 0.1) {
-            // Phase 1: Peel off
             const peelProgress = progress / 0.1;
             const easedPeel = smootherStep(peelProgress);
 
             material.uniforms.uPeelProgress.value = easedPeel;
-
             mesh.rotation.x = 0;
             mesh.rotation.y = 0;
             mesh.rotation.z = easedPeel * 0.3 * (index === 0 ? 1 : -1);
 
-            // Zephyr (index 1) moves to the right side of the screen
-            // Singularity (index 0) moves slightly left
             const viewportWidth = window.innerWidth;
             if (index === 0) {
               targetX = easedPeel * -15;
               targetY = easedPeel * -20;
-            } else {
-              // Zephyr moves to right side of screen
+            } else if (index === 1) {
               const rightSideX = viewportWidth * 0.75 - initialPos.x;
               targetX = easedPeel * rightSideX;
               targetY = easedPeel * -30;
+            } else {
+              const leftSideX = viewportWidth * 0.15 - initialPos.x;
+              targetX = easedPeel * leftSideX;
+              targetY = easedPeel * -20;
             }
 
             mesh.scale.set(1, 1, 1);
           } else if (progress < 0.85) {
-            // Phase 2: Flying
             const flyProgress = (progress - 0.1) / 0.75;
-
-            material.uniforms.uPeelProgress.value = 1.0;
+            const peelFrequency = 2 + index * 0.5;
+            const peelOscillation =
+              Math.sin(flyProgress * Math.PI * peelFrequency) * 0.15;
+            material.uniforms.uPeelProgress.value = 0.85 + peelOscillation;
 
             const baseRotZ = 0.3 * (index === 0 ? 1 : -1);
             mesh.rotation.x = Math.sin(flyProgress * Math.PI * 2) * 0.4;
@@ -218,15 +234,16 @@ export default class FloatingLogos extends Component {
 
             const finalTargetX =
               landingPositions[index].xPercent * viewportWidth;
-            // Start from where Phase 1 ended
             let startX, yStart;
             if (index === 0) {
               startX = initialPos.x - 15;
               yStart = initialPos.y - 20;
-            } else {
-              // Zephyr starts from right side of screen
+            } else if (index === 1) {
               startX = viewportWidth * 0.75;
               yStart = initialPos.y - 30;
+            } else {
+              startX = viewportWidth * 0.15;
+              yStart = initialPos.y - 20;
             }
             const baseX =
               startX + (finalTargetX - startX) * smoothStep(flyProgress);
@@ -240,10 +257,11 @@ export default class FloatingLogos extends Component {
 
             mesh.scale.set(1, 1, 1);
           } else {
-            // Phase 3: Landing and sticking
             const landProgress = (progress - 0.85) / 0.15;
             const easedLand = smootherStep(landProgress);
-            material.uniforms.uPeelProgress.value = 1.0 - easedLand;
+            const flyEndPeel = 0.85;
+            material.uniforms.uPeelProgress.value =
+              flyEndPeel * (1 - easedLand);
 
             const baseRotZ = 0.3 * (index === 0 ? 1 : -1);
             const flyEndRotX = Math.sin(Math.PI * 2) * 0.4;
@@ -320,6 +338,9 @@ export default class FloatingLogos extends Component {
     }
     if (this.elements.logo2) {
       this.moveBackToParent(this.elements.logo2, 1);
+    }
+    if (this.elements.logo3) {
+      this.moveBackToParent(this.elements.logo3, 2);
     }
 
     this.scenes.forEach((sceneData) => {

@@ -13,7 +13,8 @@
   transform-style: preserve-3d;
 
   .floating-logo-1,
-  .floating-logo-2 {
+  .floating-logo-2,
+  .floating-logo-3 {
     position: absolute;
     width: 220px;
     height: 220px;
@@ -88,10 +89,26 @@
       top: 20%;
     }
   }
+
+  .floating-logo-3 {
+    top: 20%;
+    right: 12%;
+
+    @include media("<=tablet") {
+      top: 22%;
+      right: 8%;
+    }
+
+    @include media("<=phone") {
+      top: 24%;
+      right: 5%;
+    }
+  }
 }
 
 body > .floating-logo-1,
-body > .floating-logo-2 {
+body > .floating-logo-2,
+body > .floating-logo-3 {
   position: fixed;
   width: 280px;
   height: 280px;
