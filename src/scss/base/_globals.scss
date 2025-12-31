@@ -54,7 +54,9 @@ html.has-scroll-dragging {
   width: 11px;
   height: 100vh;
   transform-origin: center right;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
   opacity: 0;
 }
 .c-scrollbar:hover {

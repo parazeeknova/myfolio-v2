@@ -264,7 +264,8 @@ $unit-intervals: (
 
   $result: string.slice($subject, 0, $search-start - 1);
   $result: $result + $replace;
-  $result: $result + string.slice($subject, $search-start + string.length($search));
+  $result: $result +
+    string.slice($subject, $search-start + string.length($search));
 
   @return $result;
 }

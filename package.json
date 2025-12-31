@@ -1,26 +1,27 @@
 {
-  "name": "myfolio-v2",
-  "version": "1.0.0",
-  "description": "Second iteration for my personal portfolio website",
-  "repository": "https://github.com/parazeeknova/myfolio-v2.git",
-  "author": "Harsh Sahu",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "dev": "vite src --port 3000",
-    "build": "vite build src",
-    "preview": "vite preview"
-  },
-  "keywords": [],
-  "devDependencies": {
-    "vite": "^5.4.21",
-    "sass": "^1.97.1"
-  },
-  "dependencies": {
-    "gsap": "^3.14.2",
-    "locomotive-scroll": "^4.1.4"
-  },
-  "trustedDependencies": [
-    "@parcel/watcher"
-  ]
+	"name": "myfolio-v2",
+	"version": "1.0.0",
+	"description": "Second iteration for my personal portfolio website",
+	"repository": "https://github.com/parazeeknova/myfolio-v2.git",
+	"author": "Harsh Sahu",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"dev": "vite src --port 3000",
+		"build": "vite build src",
+		"preview": "vite preview",
+		"check": "oxlint src --fix && bunx oxfmt@latest src"
+	},
+	"devDependencies": {
+		"oxlint": "^1.36.0",
+		"sass": "^1.97.1",
+		"vite": "^5.4.21"
+	},
+	"dependencies": {
+		"gsap": "^3.14.2",
+		"locomotive-scroll": "^4.1.4"
+	},
+	"trustedDependencies": [
+		"@parcel/watcher"
+	]
 }
