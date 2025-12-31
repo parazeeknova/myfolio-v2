@@ -1,0 +1,115 @@
+.stickers-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  flex-wrap: wrap;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.sticker {
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1) !important;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  }
+
+  &.sticker-1 {
+    width: clamp(60px, 8vw, 100px);
+    height: auto;
+    transform: rotate(-8deg);
+  }
+
+  &.sticker-2 {
+    width: clamp(70px, 10vw, 120px);
+    height: auto;
+    transform: rotate(12deg);
+  }
+
+  &.sticker-3 {
+    width: clamp(55px, 7vw, 90px);
+    height: auto;
+    transform: rotate(-15deg);
+  }
+
+  &.sticker-4 {
+    width: clamp(65px, 9vw, 110px);
+    height: auto;
+    transform: rotate(5deg);
+  }
+
+  &.sticker-5 {
+    width: clamp(75px, 11vw, 130px);
+    height: auto;
+    transform: rotate(-10deg);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .stickers-row {
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+    padding: clamp(1.5rem, 4vw, 3rem) 0;
+  }
+
+  .sticker {
+    &.sticker-1 {
+      width: clamp(50px, 10vw, 80px);
+    }
+
+    &.sticker-2 {
+      width: clamp(55px, 12vw, 90px);
+    }
+
+    &.sticker-3 {
+      width: clamp(45px, 9vw, 70px);
+    }
+
+    &.sticker-4 {
+      width: clamp(50px, 11vw, 85px);
+    }
+
+    &.sticker-5 {
+      width: clamp(60px, 13vw, 95px);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .stickers-row {
+    gap: clamp(0.3rem, 1.5vw, 1rem);
+    padding: clamp(1rem, 3vw, 2rem) 0;
+  }
+
+  .sticker {
+    &.sticker-1 {
+      width: clamp(40px, 12vw, 60px);
+      transform: rotate(-6deg);
+    }
+
+    &.sticker-2 {
+      width: clamp(45px, 14vw, 70px);
+      transform: rotate(10deg);
+    }
+
+    &.sticker-3 {
+      width: clamp(35px, 11vw, 55px);
+      transform: rotate(-12deg);
+    }
+
+    &.sticker-4 {
+      width: clamp(40px, 13vw, 65px);
+      transform: rotate(4deg);
+    }
+
+    &.sticker-5 {
+      width: clamp(50px, 15vw, 75px);
+      transform: rotate(-8deg);
+    }
+  }
+}
