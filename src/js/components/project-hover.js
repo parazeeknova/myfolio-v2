@@ -25,9 +25,14 @@ export default class ProjectHover extends Component {
 
     this.createImageContainer();
 
-    const projectLinks = Array.isArray(this.elements.projects)
-      ? this.elements.projects
-      : [this.elements.projects];
+    let projectLinks;
+    if (this.elements.projects instanceof NodeList) {
+      projectLinks = Array.from(this.elements.projects);
+    } else if (Array.isArray(this.elements.projects)) {
+      projectLinks = this.elements.projects;
+    } else {
+      projectLinks = [this.elements.projects];
+    }
 
     projectLinks.forEach((project) => {
       this.setupProjectHover(project);
@@ -89,15 +94,16 @@ export default class ProjectHover extends Component {
     this.imageContainer.appendChild(newImg);
 
     const isMobile = window.innerWidth < 768;
-    const imageSize = isMobile ? 200 : 350;
+    const bannerWidth = isMobile ? 280 : 500;
+    const bannerHeight = isMobile ? 160 : 280;
     const offsetX = 30;
     const offsetY = -50;
     const initialX = event.clientX + offsetX;
     const initialY = event.clientY + offsetY;
 
     gsap.set(this.imageContainer, {
-      width: imageSize,
-      height: imageSize * 0.7,
+      width: bannerWidth,
+      height: bannerHeight,
       left: initialX,
       top: initialY,
     });
