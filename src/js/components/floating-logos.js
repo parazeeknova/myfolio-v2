@@ -140,23 +140,43 @@ export default class FloatingLogos extends Component {
     });
 
     const contactSection = document.querySelector(".home__contact");
-    const landingPositions = [
-      {
-        xPercent: 0.03 + Math.random() * 0.18,
-        yPercent: -0.15 - Math.random() * 0.35,
-        rotation: (Math.random() - 0.5) * 0.3,
-      },
-      {
-        xPercent: 0.72 + Math.random() * 0.2,
-        yPercent: -0.2 - Math.random() * 0.4,
-        rotation: (Math.random() - 0.5) * 0.3,
-      },
-      {
-        xPercent: 0.4 + Math.random() * 0.2,
-        yPercent: -0.25 - Math.random() * 0.35,
-        rotation: (Math.random() - 0.5) * 0.3,
-      },
-    ];
+    const isMobile = window.innerWidth < 768;
+    const landingPositions = isMobile
+      ? [
+          {
+            xPercent: 0 + Math.random() * 0.05,
+            yPercent: 0.15 + Math.random() * 0.1,
+            rotation: (Math.random() - 0.5) * 0.4,
+          },
+          {
+            xPercent: 0.02 + Math.random() * 0.05,
+            yPercent: 0.28 + Math.random() * 0.1,
+            rotation: (Math.random() - 0.5) * 0.4,
+          },
+          {
+            xPercent: -0.02 + Math.random() * 0.06,
+            yPercent: 0.55 + Math.random() * 0.1,
+            rotation: (Math.random() - 0.5) * 0.4,
+          },
+        ]
+      : [
+          // Desktop: Spread out across the section
+          {
+            xPercent: 0.03 + Math.random() * 0.18,
+            yPercent: -0.15 - Math.random() * 0.35,
+            rotation: (Math.random() - 0.5) * 0.3,
+          },
+          {
+            xPercent: 0.72 + Math.random() * 0.2,
+            yPercent: -0.2 - Math.random() * 0.4,
+            rotation: (Math.random() - 0.5) * 0.3,
+          },
+          {
+            xPercent: 0.4 + Math.random() * 0.2,
+            yPercent: -0.25 - Math.random() * 0.35,
+            rotation: (Math.random() - 0.5) * 0.3,
+          },
+        ];
 
     this.scenes.forEach(({ material, mesh }, index) => {
       const logoElements = [
@@ -182,6 +202,11 @@ export default class FloatingLogos extends Component {
           const smoothStep = (t) => t * t * (3 - 2 * t);
           const smootherStep = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const mobileScale =
+            viewportWidth < 768 ? 0.6 : viewportWidth < 1024 ? 0.8 : 1;
+
           let targetX = 0;
           let targetY = 0;
 
@@ -194,18 +219,20 @@ export default class FloatingLogos extends Component {
             mesh.rotation.y = 0;
             mesh.rotation.z = easedPeel * 0.3 * (index === 0 ? 1 : -1);
 
-            const viewportWidth = window.innerWidth;
+            const peelOffsetX = viewportWidth * 0.015 * mobileScale;
+            const peelOffsetY = viewportHeight * 0.025 * mobileScale;
+
             if (index === 0) {
-              targetX = easedPeel * -15;
-              targetY = easedPeel * -20;
+              targetX = easedPeel * -peelOffsetX;
+              targetY = easedPeel * -peelOffsetY;
             } else if (index === 1) {
               const rightSideX = viewportWidth * 0.75 - initialPos.x;
-              targetX = easedPeel * rightSideX;
-              targetY = easedPeel * -30;
+              targetX = easedPeel * rightSideX * mobileScale;
+              targetY = easedPeel * -peelOffsetY * 1.2;
             } else {
               const leftSideX = viewportWidth * 0.15 - initialPos.x;
-              targetX = easedPeel * leftSideX;
-              targetY = easedPeel * -20;
+              targetX = easedPeel * leftSideX * mobileScale;
+              targetY = easedPeel * -peelOffsetY;
             }
 
             mesh.scale.set(1, 1, 1);
@@ -217,40 +244,48 @@ export default class FloatingLogos extends Component {
             material.uniforms.uPeelProgress.value = 0.85 + peelOscillation;
 
             const baseRotZ = 0.3 * (index === 0 ? 1 : -1);
-            mesh.rotation.x = Math.sin(flyProgress * Math.PI * 2) * 0.4;
-            mesh.rotation.y = Math.sin(flyProgress * Math.PI * 1.5) * 0.3;
+            mesh.rotation.x =
+              Math.sin(flyProgress * Math.PI * 2) * 0.4 * mobileScale;
+            mesh.rotation.y =
+              Math.sin(flyProgress * Math.PI * 1.5) * 0.3 * mobileScale;
             mesh.rotation.z =
               baseRotZ +
               Math.sin(flyProgress * Math.PI * 2.5) * 0.25 +
               (index === 0 ? flyProgress * 0.4 : -flyProgress * 0.4);
 
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
+            // Responsive oscillation
             const xOscillate =
               Math.sin(flyProgress * Math.PI * 2) *
-              (viewportWidth * 0.06) *
+              (viewportWidth * 0.04 * mobileScale) *
               (index === 0 ? -1 : 1);
 
             const finalTargetX =
               landingPositions[index].xPercent * viewportWidth;
+
+            // Responsive start positions
+            const peelOffsetX = viewportWidth * 0.015 * mobileScale;
+            const peelOffsetY = viewportHeight * 0.025 * mobileScale;
+
             let startX, yStart;
             if (index === 0) {
-              startX = initialPos.x - 15;
-              yStart = initialPos.y - 20;
+              startX = initialPos.x - peelOffsetX;
+              yStart = initialPos.y - peelOffsetY;
             } else if (index === 1) {
-              startX = viewportWidth * 0.75;
-              yStart = initialPos.y - 30;
+              startX =
+                viewportWidth * 0.75 * mobileScale +
+                viewportWidth * 0.25 * (1 - mobileScale);
+              yStart = initialPos.y - peelOffsetY * 1.2;
             } else {
               startX = viewportWidth * 0.15;
-              yStart = initialPos.y - 20;
+              yStart = initialPos.y - peelOffsetY;
             }
             const baseX =
               startX + (finalTargetX - startX) * smoothStep(flyProgress);
 
             const yEnd = viewportHeight * 0.7;
             const yTravel = yStart + (yEnd - yStart) * smoothStep(flyProgress);
-            const yWave = Math.sin(flyProgress * Math.PI * 1.5) * 20;
+            const yWave =
+              Math.sin(flyProgress * Math.PI * 1.5) * (20 * mobileScale);
 
             targetX = baseX + xOscillate - initialPos.x;
             targetY = yTravel + yWave - initialPos.y;
