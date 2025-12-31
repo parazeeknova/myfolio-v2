@@ -1,3 +1,5 @@
+@use "../utils/variables" as *;
+
 %links {
   a {
     color: $col-boulder;

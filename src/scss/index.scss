@@ -1,16 +1,16 @@
-@import "base/reset";
+@use "base/reset";
 
-@import "utils/breakpoints";
-@import "utils/variables";
+@use "utils/breakpoints" as *;
+@use "utils/variables" as *;
 
-@import "base/fonts";
-@import "base/globals";
+@use "base/fonts";
+@use "base/globals";
 
-@import "shared/title";
-@import "shared/description";
-@import "shared/links";
+@use "shared/title" as *;
+@use "shared/description" as *;
+@use "shared/links" as *;
 
-@import "components/texthover";
-@import "components/link";
+@use "components/texthover";
+@use "components/link";
 
-@import "pages/home";
+@use "pages/home";

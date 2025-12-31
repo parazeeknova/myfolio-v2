@@ -1,15 +1,15 @@
-FROM node:20-alpine AS builder
+FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json bun.lockb ./
 COPY src/vite.config.js ./src/
 
-RUN yarn install --frozen-lockfile
+RUN bun install
 
 COPY src/ ./src/
 
-RUN yarn build
+RUN bun run build
 
 FROM nginx:alpine
 

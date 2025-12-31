@@ -1,23 +1,26 @@
 {
-	"name": "myfolio-v2",
-	"version": "1.0.0",
-	"description": "Second iteration for my personal portfolio website",
-	"repository": "https://github.com/parazeeknova/myfolio-v2.git",
-	"author": "Harsh Sahu",
-	"license": "MIT",
-	"private": true,
-	"scripts": {
-		"dev": "vite src --port 3000",
-		"build": "vite build src",
-		"preview": "vite preview"
-	},
-	"keywords": [],
-	"devDependencies": {
-		"vite": "^5.2.9",
-		"sass": "^1.62.0"
-	},
-	"dependencies": {
-		"gsap": "^3.7.0",
-		"locomotive-scroll": "^4.1.1"
-	}
+  "name": "myfolio-v2",
+  "version": "1.0.0",
+  "description": "Second iteration for my personal portfolio website",
+  "repository": "https://github.com/parazeeknova/myfolio-v2.git",
+  "author": "Harsh Sahu",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vite src --port 3000",
+    "build": "vite build src",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "vite": "^5.4.21",
+    "sass": "^1.97.1"
+  },
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "locomotive-scroll": "^4.1.4"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
 }

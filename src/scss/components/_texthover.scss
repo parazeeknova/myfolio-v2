@@ -1,3 +1,8 @@
+@use "../utils/breakpoints" as *;
+@use "../utils/variables" as *;
+@use "../shared/description" as *;
+@use "../shared/title" as *;
+
 .home__projects__project {
   color: $col-boulder;
 

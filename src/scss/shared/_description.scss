@@ -1,3 +1,6 @@
+@use "../utils/breakpoints" as *;
+@use "../utils/variables" as *;
+
 %description-12 {
   font-size: 12px;
   font-family: $font-sauce;

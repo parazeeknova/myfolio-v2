@@ -1,3 +1,6 @@
+@use "../utils/breakpoints" as *;
+@use "../utils/variables" as *;
+
 html {
   font-size: calc(100vw / 1440 * 10);
   overscroll-behavior: none;

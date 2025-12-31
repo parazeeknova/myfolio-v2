@@ -1,3 +1,9 @@
+@use "sass:list";
+@use "sass:meta";
+@use "sass:string";
+@use "sass:map";
+@use "sass:math";
+
 $breakpoints: (
   "phone": 550px,
   "tablet": 768px,
@@ -89,11 +95,11 @@ $unit-intervals: (
 ///  @include media(">=350px", "<tablet", "retina3x") { }
 ///
 @mixin media($conditions...) {
-  @for $i from 1 through length($conditions) {
-    $conditions: set-nth(
+  @for $i from 1 through list.length($conditions) {
+    $conditions: list.set-nth(
       $conditions,
       $i,
-      parse-expression(nth($conditions, $i))
+      parse-expression(list.nth($conditions, $i))
     );
   }
 
@@ -101,7 +107,7 @@ $unit-intervals: (
   $query: "";
 
   @each $branch in $branches {
-    @if (str-length($query) != 0) {
+    @if (string.length($query) != 0) {
       $query: $query + ", ";
     }
 
@@ -130,14 +136,14 @@ $unit-intervals: (
 
   // Getting initial snapshot and looking for groups
   @each $expression in $expressions {
-    @if (str-length($result) != 0) {
+    @if (string.length($result) != 0) {
       $result: $result + " and ";
     }
 
-    @if (type-of($expression) == "string") {
+    @if (meta.type-of($expression) == "string") {
       $result: $result + $expression;
-    } @else if (type-of($expression) == "list") {
-      $result: $result + nth($expression, 1);
+    } @else if (meta.type-of($expression) == "list") {
+      $result: $result + list.nth($expression, 1);
       $has-groups: true;
     } @else {
       @warn '#{$expression} is not a valid expression.';
@@ -147,13 +153,13 @@ $unit-intervals: (
   // If we have groups, we have to create all possible combinations
   @if $has-groups {
     @each $expression in $expressions {
-      @if (type-of($expression) == "list") {
-        $first: nth($expression, 1);
+      @if (meta.type-of($expression) == "list") {
+        $first: list.nth($expression, 1);
 
         @each $member in $expression {
           @if ($member != $first) {
             @each $partial in $result {
-              $result: join(
+              $result: list.join(
                 $result,
                 str-replace-first($first, $member, $partial)
               );
@@ -187,35 +193,35 @@ $unit-intervals: (
   $result: "";
   $is-width: true;
 
-  @if (type-of($expression) != "string") {
-    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';
+  @if (meta.type-of($expression) != "string") {
+    @warn 'Expression with type `#{meta.type-of($expression)}` detected, string expected.';
   }
 
   // Separating the operator from the rest of the expression
-  @if (str-slice($expression, 2, 2) == "=") {
-    $operator: str-slice($expression, 1, 2);
-    $value: str-slice($expression, 3);
+  @if (string.slice($expression, 2, 2) == "=") {
+    $operator: string.slice($expression, 1, 2);
+    $value: string.slice($expression, 3);
   } @else {
-    $operator: str-slice($expression, 1, 1);
-    $value: str-slice($expression, 2);
+    $operator: string.slice($expression, 1, 1);
+    $value: string.slice($expression, 2);
   }
 
   // Checking what type of expression we're dealing with
-  @if map-has-key($breakpoints, $value) {
-    $result: map-get($breakpoints, $value);
-  } @else if map-has-key($media-expressions, $expression) {
-    $result: map-get($media-expressions, $expression);
+  @if map.has-key($breakpoints, $value) {
+    $result: map.get($breakpoints, $value);
+  } @else if map.has-key($media-expressions, $expression) {
+    $result: map.get($media-expressions, $expression);
     $is-width: false;
   } @else {
     $result: to-number($value);
   }
 
   @if ($is-width) {
-    $unit: unit($result);
+    $unit: math.unit($result);
     $interval: 0;
 
-    @if (map-has-key($unit-intervals, $unit)) {
-      $interval: map-get($unit-intervals, $unit);
+    @if (map.has-key($unit-intervals, $unit)) {
+      $interval: map.get($unit-intervals, $unit);
     } @else {
       @warn 'Unknown unit: #{$unit}';
     }
@@ -250,15 +256,15 @@ $unit-intervals: (
 /// @return {String | Null}
 ///
 @function str-replace-first($search, $replace, $subject) {
-  $search-start: str-index($subject, $search);
+  $search-start: string.index($subject, $search);
 
   @if $search-start == null {
     @return $subject;
   }
 
-  $result: str-slice($subject, 0, $search-start - 1);
+  $result: string.slice($subject, 0, $search-start - 1);
   $result: $result + $replace;
-  $result: $result + str-slice($subject, $search-start + str-length($search));
+  $result: $result + string.slice($subject, $search-start + string.length($search));
 
   @return $result;
 }
@@ -283,21 +289,23 @@ $unit-intervals: (
   $minus: false;
 
   // Looping through all characters
-  @for $i from 1 through str-length($string) {
-    $character: str-slice($string, $i, $i);
-    $index: index($strings, $character);
+  @for $i from 1 through string.length($string) {
+    $character: string.slice($string, $i, $i);
+    $index: list.index($strings, $character);
 
     @if $character == "-" {
       $minus: true;
     } @else if $character == "." {
       $divider: 1;
     } @else {
-      @if type-of($index) != "number" {
-        $result: if($minus, $result * -1, $result);
-        @return _length($result, str-slice($string, $i));
+      @if meta.type-of($index) != "number" {
+        @if $minus {
+          $result: $result * -1;
+        }
+        @return _length($result, string.slice($string, $i));
       }
 
-      $number: nth($numbers, $index);
+      $number: list.nth($numbers, $index);
 
       @if $divider == 0 {
         $result: $result * 10;
@@ -311,19 +319,23 @@ $unit-intervals: (
     }
   }
 
-  @return if($minus, $result * -1, $result);
+  @if $minus {
+    @return $result * -1;
+  } @else {
+    @return $result;
+  }
 }
 
 @function _length($number, $unit) {
   $strings: "px" "cm" "mm" "%" "ch" "pica" "in" "em" "rem" "pt" "pc" "ex" "vw"
     "vh" "vmin" "vmax";
   $units: 1px 1cm 1mm 1% 1ch 1pica 1in 1em 1rem 1pt 1pc 1ex 1vw 1vh 1vmin 1vmax;
-  $index: index($strings, $unit);
+  $index: list.index($strings, $unit);
 
-  @if type-of($index) != "number" {
+  @if meta.type-of($index) != "number" {
     @warn 'Unknown unit `#{$unit}`.';
     @return false;
   }
 
-  @return $number * nth($units, $index);
+  @return $number * list.nth($units, $index);
 }
