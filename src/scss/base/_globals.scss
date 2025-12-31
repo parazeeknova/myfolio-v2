@@ -26,6 +26,26 @@ body {
   color: $col-gray;
 }
 
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  .github-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+}
+
 // Locomotive
 
 html.has-scroll-smooth {
