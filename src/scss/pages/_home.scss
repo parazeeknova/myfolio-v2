@@ -95,6 +95,7 @@
   }
 
   &__hero {
+    position: relative;
     margin-bottom: 9.6rem;
     @extend %padding-home;
 

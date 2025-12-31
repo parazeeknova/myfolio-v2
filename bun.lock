@@ -7,6 +7,7 @@
       "dependencies": {
         "gsap": "^3.14.2",
         "locomotive-scroll": "^4.1.4",
+        "three": "^0.182.0",
       },
       "devDependencies": {
         "oxlint": "^1.36.0",
@@ -210,6 +211,8 @@
     "smoothscroll-polyfill": ["smoothscroll-polyfill@0.4.4", "", {}, "sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg=="],
 
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
+
+    "three": ["three@0.182.0", "", {}, "sha512-GbHabT+Irv+ihI1/f5kIIsZ+Ef9Sl5A1Y7imvS5RQjWgtTPfPnZ43JmlYI7NtCRDK9zir20lQpfg8/9Yd02OvQ=="],
 
     "tiny-emitter": ["tiny-emitter@1.2.0", "", {}, "sha512-rWjF00inHeWtT5UbQYAXoMI4hL6TRMqohuKCsODyPYYmfAxqfMnXLsIeNrbdPEkNxlk++rojVilTnI9IVmEBtA=="],
 

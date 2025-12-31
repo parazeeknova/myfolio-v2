@@ -18,7 +18,6 @@ export default class Component {
 
     this.elements = {};
 
-    // biome-ignore lint/complexity/noForEach: ignore
     Object.keys(this.selectorChildren).forEach((key) => {
       const entry = this.selectorChildren[key];
 
