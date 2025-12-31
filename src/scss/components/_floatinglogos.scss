@@ -60,7 +60,6 @@
     }
   }
 
-  // Singularity logo - below DEV
   .floating-logo-1 {
     top: 58%;
     left: 12%;
@@ -76,7 +75,6 @@
     }
   }
 
-  // Zephyr logo - above STACK
   .floating-logo-2 {
     top: 32%;
     right: 15%;
@@ -90,5 +88,37 @@
       top: 36%;
       right: 5%;
     }
+  }
+}
+
+body > .floating-logo-1,
+body > .floating-logo-2 {
+  position: fixed;
+  width: 220px;
+  height: 220px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  overflow: visible;
+  z-index: 9999;
+
+  @include media("<=tablet") {
+    width: 160px;
+    height: 160px;
+  }
+
+  @include media("<=phone") {
+    width: 120px;
+    height: 120px;
+  }
+
+  img {
+    display: none;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
   }
 }
