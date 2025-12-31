@@ -1,3 +1,5 @@
+import glsl from "vite-plugin-glsl";
+
 export default {
   root: "src",
   build: {
@@ -5,6 +7,7 @@ export default {
     emptyOutDir: true,
   },
   envDir: "../",
+  plugins: [glsl()],
   css: {
     preprocessorOptions: {
       scss: {

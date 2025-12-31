@@ -1,7 +1,11 @@
-import Component from "../classes/Component";
+import Component from "../classes/component";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import * as THREE from "three";
+import {
+  createLogoScene,
+  startAnimationLoop,
+  disposeScene,
+} from "./floating-logos-webgl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,116 +27,17 @@ export default class FloatingLogos extends Component {
 
   initWebGL() {
     [this.elements.logo1, this.elements.logo2].forEach((logoElement, index) => {
-      if (!logoElement) return;
-
-      const img = logoElement.querySelector("img");
-      if (!img) return;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.OrthographicCamera(
-        -1.2,
-        1.2,
-        1.2,
-        -1.2,
-        0.1,
-        10
-      );
-      camera.position.z = 1;
-
-      const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-      });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-
-      const rect = logoElement.getBoundingClientRect();
-      renderer.setSize(rect.width, rect.height);
-
-      img.style.display = "none";
-      logoElement.appendChild(renderer.domElement);
-      renderer.domElement.style.width = "100%";
-      renderer.domElement.style.height = "100%";
-
-      const textureLoader = new THREE.TextureLoader();
-      textureLoader.load(img.src, (texture) => {
-        const geometry = new THREE.PlaneGeometry(2.2, 2.2, 32, 32);
-
-        const material = new THREE.ShaderMaterial({
-          uniforms: {
-            uTexture: { value: texture },
-            uPeelProgress: { value: 0 },
-            uTime: { value: 0 },
-          },
-          vertexShader: `
-						uniform float uPeelProgress;
-						uniform float uTime;
-						varying vec2 vUv;
-						varying float vElevation;
-						
-						void main() {
-							vUv = uv;
-							
-							vec3 pos = position;
-							
-							// Floating animation
-							float floatOffset = sin(uTime + position.x * 2.0) * 0.05;
-							pos.y += floatOffset;
-							pos.x += cos(uTime * 0.8 + position.y * 2.0) * 0.03;
-							
-					// Peel effect from top (inverse)
-					float peelInfluence = smoothstep(1.0 - uPeelProgress, 1.0, uv.y);
-					float peelAmount = peelInfluence * uPeelProgress;
-					
-					// Create curl effect
-					float curlAngle = peelAmount * 3.14159; // 180 degrees max
-					float radius = 0.5;
-					
-					pos.y -= peelAmount * 2.0; // Move up as it peels from top
-					pos.z = sin(curlAngle) * radius * peelInfluence; // Lift off surface
-					pos.y += (1.0 - cos(curlAngle)) * radius * peelInfluence; // Curl under from top
-							
-							vElevation = peelAmount;
-							
-							gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-						}
-					`,
-          fragmentShader: `
-						uniform sampler2D uTexture;
-						uniform float uPeelProgress;
-						varying vec2 vUv;
-						varying float vElevation;
-						
-						void main() {
-							vec4 texColor = texture2D(uTexture, vUv);
-							
-							// Add slight brightness to peeled area to simulate light reflection
-							vec3 color = texColor.rgb + vElevation * 0.15;
-							
-							gl_FragColor = vec4(color, texColor.a);
-						}
-					`,
-          transparent: true,
-          side: THREE.DoubleSide,
-        });
-
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-        this.scenes.push({ scene, camera, renderer, material, mesh, index });
-        this.animate(scene, camera, renderer, material);
+      createLogoScene(logoElement, index, (sceneData) => {
+        this.scenes.push(sceneData);
+        startAnimationLoop(
+          sceneData.scene,
+          sceneData.camera,
+          sceneData.renderer,
+          sceneData.material,
+          () => this.isDestroyed
+        );
       });
     });
-  }
-
-  animate(scene, camera, renderer, material) {
-    const renderLoop = () => {
-      if (!this.isDestroyed) {
-        material.uniforms.uTime.value += 0.016;
-        renderer.render(scene, camera);
-        requestAnimationFrame(renderLoop);
-      }
-    };
-    renderLoop();
   }
 
   initAnimation() {
@@ -341,14 +246,8 @@ export default class FloatingLogos extends Component {
     if (this.elements.logo1) this.elements.logo1.style.transform = "";
     if (this.elements.logo2) this.elements.logo2.style.transform = "";
 
-    this.scenes.forEach(({ scene, renderer, material, mesh }) => {
-      scene.remove(mesh);
-      mesh.geometry.dispose();
-      material.dispose();
-      if (material.uniforms.uTexture.value) {
-        material.uniforms.uTexture.value.dispose();
-      }
-      renderer.dispose();
+    this.scenes.forEach((sceneData) => {
+      disposeScene(sceneData);
     });
 
     this.scenes = [];

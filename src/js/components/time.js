@@ -1,5 +1,5 @@
 import { mapEach } from "../utils/dom";
-import Component from "../classes/Component";
+import Component from "../classes/component";
 
 export default class Time extends Component {
   constructor() {
