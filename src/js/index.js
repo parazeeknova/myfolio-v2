@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { copyText } from "./utils/index";
 import { mapEach } from "./utils/dom";
 import FloatingLogos from "./components/floating-logos";
+import ProjectHover from "./components/project-hover";
 
 const toContactButtons = document.querySelectorAll(".contact-scroll");
 const footer = document.getElementById("js-footer");
@@ -51,6 +52,7 @@ export default class Home {
     // Only initialize FloatingLogos on homepage
     if (document.querySelector(".home")) {
       this.floatingLogos = new FloatingLogos();
+      this.projectHover = new ProjectHover();
     }
     this.heroTextAnimation();
     this.homeIntro();

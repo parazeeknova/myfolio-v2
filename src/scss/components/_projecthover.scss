@@ -1,0 +1,75 @@
+@use "../utils/breakpoints" as *;
+@use "../utils/variables" as *;
+
+.project-hover-image {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  overflow: hidden;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.4),
+    0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0)
+    );
+    border-radius: inherit;
+    opacity: 0.5;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
+.home__projects__project__link {
+  position: relative;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $col-gray;
+  }
+
+  &[data-project-image] {
+    cursor: none;
+
+    @include media("<=phone") {
+      cursor: pointer;
+    }
+  }
+}
