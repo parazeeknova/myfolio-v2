@@ -61,32 +61,31 @@
   }
 
   .floating-logo-1 {
-    top: 58%;
-    left: 12%;
+    top: 78%;
+    left: 8%;
 
     @include media("<=tablet") {
-      top: 56%;
-      left: 8%;
+      top: 74%;
+      left: 5%;
     }
 
     @include media("<=phone") {
-      top: 54%;
-      left: 5%;
+      top: 70%;
+      left: 3%;
     }
   }
 
   .floating-logo-2 {
-    top: 32%;
-    right: 15%;
+    top: 15%;
+    left: 42%;
+    transform: translateX(-50%);
 
     @include media("<=tablet") {
-      top: 34%;
-      right: 10%;
+      top: 18%;
     }
 
     @include media("<=phone") {
-      top: 36%;
-      right: 5%;
+      top: 20%;
     }
   }
 }
@@ -94,8 +93,8 @@
 body > .floating-logo-1,
 body > .floating-logo-2 {
   position: fixed;
-  width: 220px;
-  height: 220px;
+  width: 280px;
+  height: 280px;
   pointer-events: none;
   will-change: transform, opacity;
   transform-style: preserve-3d;
@@ -104,13 +103,13 @@ body > .floating-logo-2 {
   z-index: 9999;
 
   @include media("<=tablet") {
-    width: 160px;
-    height: 160px;
+    width: 200px;
+    height: 200px;
   }
 
   @include media("<=phone") {
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
   }
 
   img {
@@ -120,5 +119,6 @@ body > .floating-logo-2 {
   canvas {
     width: 100% !important;
     height: 100% !important;
+    overflow: visible;
   }
 }

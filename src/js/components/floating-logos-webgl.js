@@ -9,7 +9,7 @@ export function createLogoScene(logoElement, index, onSceneReady) {
   if (!img) return null;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-1.2, 1.2, 1.2, -1.2, 0.1, 10);
+  const camera = new THREE.OrthographicCamera(-1.5, 1.5, 1.5, -1.5, 0.1, 10);
   camera.position.z = 1;
 
   const renderer = new THREE.WebGLRenderer({
