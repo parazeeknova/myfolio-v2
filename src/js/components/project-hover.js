@@ -108,8 +108,6 @@ export default class ProjectHover extends Component {
       duration: 0.6,
       ease: "power3.out",
     });
-
-    this.moveLogosAside();
   }
 
   moveProjectImage(e) {
@@ -139,8 +137,6 @@ export default class ProjectHover extends Component {
       duration: 0.4,
       ease: "power2.in",
     });
-
-    this.restoreLogos();
   }
 
   moveLogosAside() {
