@@ -210,6 +210,7 @@
 
       &__paragraph {
         color: $col-gray;
+        @extend %links;
 
         span {
           text-transform: uppercase;

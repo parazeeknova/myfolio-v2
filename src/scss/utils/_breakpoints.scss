@@ -146,7 +146,7 @@ $unit-intervals: (
       $result: $result + list.nth($expression, 1);
       $has-groups: true;
     } @else {
-      @warn '#{$expression} is not a valid expression.';
+      @warn "#{$expression} is not a valid expression.";
     }
   }
 
@@ -194,7 +194,7 @@ $unit-intervals: (
   $is-width: true;
 
   @if (meta.type-of($expression) != "string") {
-    @warn 'Expression with type `#{meta.type-of($expression)}` detected, string expected.';
+    @warn "Expression with type `#{meta.type-of($expression)}` detected, string expected.";
   }
 
   // Separating the operator from the rest of the expression
@@ -223,7 +223,7 @@ $unit-intervals: (
     @if (map.has-key($unit-intervals, $unit)) {
       $interval: map.get($unit-intervals, $unit);
     } @else {
-      @warn 'Unknown unit: #{$unit}';
+      @warn "Unknown unit: #{$unit}";
     }
 
     @if ($operator == ">") {
@@ -235,7 +235,7 @@ $unit-intervals: (
     } @else if ($operator == "<=") {
       $element: "(max-width: #{$result})";
     } @else {
-      @warn '#{$expression} is missing an operator.';
+      @warn "#{$expression} is missing an operator.";
     }
   } @else {
     $element: $result;
@@ -334,7 +334,7 @@ $unit-intervals: (
   $index: list.index($strings, $unit);
 
   @if meta.type-of($index) != "number" {
-    @warn 'Unknown unit `#{$unit}`.';
+    @warn "Unknown unit `#{$unit}`.";
     @return false;
   }
 
